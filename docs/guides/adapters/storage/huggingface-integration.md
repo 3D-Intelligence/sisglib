@@ -4,17 +4,17 @@
 ## Vision
 
 **sisglib** is an open-source library for AI-driven scene generation.
-Like **an OpenAI Gym for 3D scene generation**, we provide modular and composable strategy and pipeline interfaces for researchers to develop and benchmark prompt-to-3D scene generation algorithms (e.g., [Holodeck](https://yueyang1996.github.io/holodeck/)).
+Like **an OpenAI Gym for 3D scene generation**, we provide modular and composable strategy and pipeline interfaces for researchers to develop and benchmark prompt-to-3D scene generation algorithms (e.g. [Holodeck](https://yueyang1996.github.io/holodeck/)).
 
 
 ## Why
 
 A key challenge in 3D scene generation is **data management**.
 Typically, researchers need to:
-- Download large datasets (e.g., [Objaverse](https://objaverse.allenai.org/))
+- Download large datasets (e.g. [Objaverse](https://objaverse.allenai.org/))
 - Preprocess data
-- Set up vector databases for similarity search and retrieval (e.g., [Weaviate](https://weaviate.io/))
-- Serve assets over HTTP (e.g., [HuggingFace Datasets](https://huggingface.co/datasets/allenai/objaverse/tree/main/glbs))
+- Set up vector databases for similarity search and retrieval (e.g. [Weaviate](https://weaviate.io/))
+- Serve assets over HTTP (e.g. [HuggingFace Datasets](https://huggingface.co/datasets/allenai/objaverse/tree/main/glbs))
 
 This is **time-consuming, error-prone, and requires expertise in infrastructure management**.
 

@@ -32,7 +32,7 @@ Built on [sissf](https://github.com/3D-Intelligence/sissf) (Spatial Intelligence
 - **Novel Scene Generation Methods**:
 Implement LLM-based, learned, or rule-based approaches within a common framework
 - **Multi-Strategy Benchmarks**:
-Compare your approach against baselines (e.g., Holodeck) on standardized datasets
+Compare your approach against baselines (e.g. Holodeck) on standardized datasets
 - **Composable Pipelines**:
 Mix custom stages with pre-built components - architecture generation, constraint-based placement, semantic retrieval
 - **Research Prototypes**:
@@ -52,10 +52,10 @@ from sisglib.pipeline.generation import HolodeckStrategy, SceneGenerationPipelin
 
 
 async def sisglib_holodeck_quickstart() -> SceneState:
-    # --- 1. Initialise holodeck strategy ---
+    # --- 1. Initialize holodeck strategy ---
     holodeck_strategy = HolodeckStrategy.build()
 
-    # --- 2. Initialise pipeline with holodeck strategy ---
+    # --- 2. Initialize pipeline with holodeck strategy ---
     pipeline = SceneGenerationPipeline(strategy=holodeck_strategy)
 
     # --- 3. Generate scene from prompt ---
@@ -278,10 +278,15 @@ for strategy in [holodeck, your_method, hybrid]:
 
 ## Documentation
 
+Please refer to the following general documentations for more information:
+- [Project Vision](docs/vision.md)
+- [Value Propositions](docs/value_propositions.md)
+- [Development Roadmap](docs/roadmap.md)
+
 ### Guides
 - **[Custom Strategies Development Guide](docs/guides/pipelines/custom-strategies.md)** - Build your own scene generation strategies
 - **[Adapter Architecture Guide](docs/guides/adapters/adapter-architecture.md)** - Understanding storage, vectors, and metadata adapters
-- **[Backend Configuration Guide](docs/guides/backend-configuration.md)** - Configure adapters for different environments
+<!-- - **[Backend Configuration Guide](docs/guides/backend-configuration.md)** - Configure adapters for different environments -->
 - **[HuggingFace Integration Guide](docs/guides/adapters/storage/huggingface-integration.md)** - Stream datasets without downloads
 
 ### Code Reference

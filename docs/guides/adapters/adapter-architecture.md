@@ -266,4 +266,4 @@ vectors = PineconeAdapter(api_key=os.getenv("PINECONE_KEY"))
 metadata = MongoDBAdapter(connection_string=os.getenv("MONGODB_URI"))
 ```
 
-This gives you **21 possible backend combinations** (3 storage types × 7 vector types × 1 metadata type, etc.) without changing your application code.
+This gives you **320 possible backend combinations!** (8 storage types × 8 vector types × 5 metadata type, etc.) without changing your application code.
