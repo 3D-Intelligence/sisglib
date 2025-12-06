@@ -49,31 +49,24 @@ Generate a 3D scene from a text prompt using the pre-configured Holodeck strateg
 
 ```python
 from sissf import SceneState  # pip install sissf
-
 from sisglib.pipeline.generation import HolodeckStrategy, SceneGenerationPipeline
 
 
-async def sisglib_holodeck_quickstart() -> SceneState:
-    # --- 1. Initialize holodeck strategy ---
-    holodeck_strategy = HolodeckStrategy.build()
+# 1. Initialize holodeck strategy
+holodeck_strategy = HolodeckStrategy.build()
 
-    # --- 2. Initialize pipeline with holodeck strategy ---
-    pipeline = SceneGenerationPipeline(strategy=holodeck_strategy)
+# 2. Initialize pipeline with holodeck strategy
+pipeline = SceneGenerationPipeline(strategy=holodeck_strategy)
 
-    # --- 3. Generate scene from prompt ---
-    scene: SceneState = await pipeline.generate(
-        prompt="A modern living room with a sofa, coffee table, and TV."
-    )
-
-    return scene
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(sisglib_holodeck_quickstart())
-
+# 3. Generate scene from prompt
+scene: SceneState = await pipeline.generate(
+    prompt="A spa with large hot tub, massage tables, waiting area, and office."
+)
 ```
+Output:
+<!-- ![](assets/generated_scene.png) -->
+<img src="./assets/generated_scene.png" alt= "Generated Scene: 'A spa with large hot tub, massage tables, waiting area, and office.'" style="width: 80%; min-width: 350px; max-width: 800px; display: block; margin: 0 auto;">
+<br>
 
 See the full quickstart script [here](sisglib/pipeline/generation/quickstart.py).
 

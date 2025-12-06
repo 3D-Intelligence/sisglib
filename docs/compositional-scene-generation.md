@@ -11,41 +11,71 @@ This document explains what compositional scene generation is, how it differs fr
 Compositional scene generation creates 3D scenes by:
 
 1. **Selecting** individual 3D assets (furniture, objects, architectural elements)
-2. **Placing** these assets in 3D space with appropriate positions and orientations
-3. **Arranging** assets to satisfy spatial constraints and functional relationships
-4. **Composing** the final scene from discrete, reusable components
+1. **Arranging** assets to satisfy spatial constraints and functional relationships
+1. **Placing** these assets in 3D space with appropriate positions and orientations
+1. **Composing** the final scene from discrete, reusable components
 
 Each asset remains a distinct, manipulable entity with its own geometry, materials, and metadata.
 
 ## Why Compositional Scene Generation?
 
+### Assets Bring Their Own Functionality
+
+**The core advantage:** When you use pre-existing assets, they come with everything already built-in - physics, logic, interactivity, and functionality.
+
+**Real-world examples:**
+- **Game assets**: A Harry Potter wand asset comes with spell-casting logic, physics interactions, particle effects, and animations already configured
+- **Architectural assets**: A door from a BIM library includes opening mechanisms, accessibility compliance data, fire ratings, and construction specifications
+- **Interactive objects**: Kitchen appliances with working animations, collision meshes, sound effects, and user interaction scripts
+
+<!-- <img src="../assets/generated_scene.png" alt= "Generated Scene: 'A spa with large hot tub, massage tables, waiting area, and office.'" style="width: 45%; min-width: 350px; max-width: 800px; display: block; margin: 0 auto;">
+<img src="../assets/interactive_scene_demo.gif" alt="Interactive scene generated compositionally and imported into Unity - doors can be opened, objects have physics" style="width: 45%; min-width: 350px; max-width: 800px; display: block; margin: 0 auto;"> -->
+<div style="text-align: center;">
+  <img src="../assets/generated_scene.png" alt="Generated Scene: 'A spa with large hot tub, massage tables, waiting area, and office.'" style="width: 45%; min-width: 350px; max-width: 800px; display: inline-block; margin: 0 auto;">
+  <img src="../assets/interactive_scene_demo.gif" alt="Interactive scene generated compositionally and imported into Unity - doors can be opened, objects have physics" style="width: 45%; min-width: 350px; max-width: 800px; display: inline-block; margin: 0 auto;">
+</div>
+<br>
+
+> *Scene generated with compositional approach, imported into Unity - doors open, objects have physics and interactivity built-in.*
+
+**Why this matters:** Neural or unified mesh approaches regenerate geometry from scratch, losing all this functionality. 
+You'd need to manually re-add physics, re-script interactions, and re-create optimizations. Compositional generation preserves the work already invested in assets.
+
 ### 1. Workflow Compatibility
 
-Architects work with pre-existing BIM/CAD models and need integration with Revit, SketchUp, and Rhino. Game studios rely on licensed asset libraries with pre-configured physics, collision meshes, and LOD levels - existing Unity/Unreal pipelines are built around asset-based workflows.
+Architects work with pre-existing BIM/CAD models where furniture and fixtures come from manufacturer catalogs with real-world dimensions, materials data, and compliance information. 
+Game studios build entire ecosystems around licensed asset libraries - Unity Asset Store, Quixel Megascans, proprietary studios assets - all with pre-configured LOD levels, collision meshes, and platform-specific optimizations.
 
 ### 2. Asset Reusability & Licensing
 
-Leverage industry-standard libraries (Sketchfab, TurboSquid, Quixel, Unity Asset Store) with pre-cleared usage rights and studio-specific art styles. Neural approaches require regenerating assets, losing licensing agreements, custom functionality, and optimizations.
+Industry-standard libraries (Sketchfab, TurboSquid, Quixel, Unity Asset Store) provide thousands of pre-cleared assets with usage rights, consistent art styles, and production-ready quality. 
+Neural approaches force you to regenerate assets from scratch, immediately invalidating licensing agreements and losing years of optimization work.
 
-### 3. Interpretability & Editability
+### 3. Composability & Editability
 
-Each object has semantic meaning (chair, table, lamp) and can be moved, replaced, or removed individually. Enables designer-in-the-loop workflows, automated constraint checking (clearances, accessibility), and iterative refinement without full regeneration.
+Each object is a distinct entity (e.g. chair, table, lamp) and can be moved, replaced, edited, or removed individually. 
+Enables designer-in-the-loop workflows, automated constraint checking (clearances, accessibility), and iterative refinement without full regeneration.
 
 ### 4. Interoperability & Platform-Agnostic Formats
 
-Scenes represented as JSON-like scene graphs (e.g., [sissf](https://github.com/3D-Intelligence/sissf)) and standard formats (GLTF/GLB, USD, FBX). Same scene works in web viewers, game engines, CAD tools, and VR/AR platforms.
+Scenes represented as JSON-like scene states (e.g., [sissf](https://github.com/3D-Intelligence/sissf)) and standard formats (GLTF/GLB, USD, FBX). 
+Same scene works in web viewers, game engines, CAD tools, and VR/AR platforms.
 
 ### 5. Granular Control & Constraints
 
-Apply object-level constraints ("sofa against wall"), semantic rules ("bedside tables flank bed"), and enforce physical plausibility through discrete collision detection. Neural methods struggle with precise spatial/semantic constraints.
+Apply object-level constraints ("sofa against wall"), semantic rules ("bedside tables flank bed"), and enforce physical plausibility through discrete collision detection. 
+Neural methods struggle with precise spatial/semantic constraints.
 
 ### 6. Performance & Scalability
 
-Standard GPU pipelines with LOD swapping, instancing for duplicated objects, and on-demand asset streaming. Neural representations require expensive per-frame rendering with limited optimization.
+Standard GPU pipelines with LOD (level of detail) swapping, instancing for duplicated objects, and on-demand asset streaming. 
+Neural representations require expensive per-frame rendering with limited optimization.
 
 ### 7. Integration with Existing Pipelines
 
 Seamless integration with game engines (Unity, Unreal, Godot), rendering engines (V-Ray, Arnold, Cycles), physics engines (PhysX, Bullet), and VR/AR SDKs - all expect asset-based scene graphs.
+
+
 
 ## Alternative Approaches
 
