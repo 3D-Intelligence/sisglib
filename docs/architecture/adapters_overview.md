@@ -1,4 +1,4 @@
-# Adapter Architecture Guide
+# Adapters - Overview
 
 ## Overview
 
@@ -267,3 +267,71 @@ metadata = MongoDBAdapter(connection_string=os.getenv("MONGODB_URI"))
 ```
 
 This gives you **320 possible backend combinations!** (8 storage types × 8 vector types × 5 metadata type, etc.) without changing your application code.
+
+## Backend-Agnostic Infrastructure
+
+sisglib's adapter system abstracts storage, metadata, and vector operations - letting you focus on your algorithm, not infrastructure.
+
+### Storage Adapter
+
+Read and write assets across different backends with the same API:
+
+```python
+from sisglib.adapters.storage import StorageAdapter
+
+# Development - local files
+adapter = await StorageAdapter.from_url("file:///local/assets")
+
+# Research - Hugging Face datasets (no download needed)
+adapter = await StorageAdapter.from_url(
+    "https://huggingface.co/datasets/your-org/assets"
+)
+
+# Production - cloud storage
+adapter = await StorageAdapter.from_url("s3://prod-bucket/assets")
+
+# Same code works for all backends
+asset_bytes: bytes = await adapter.read("objects/Chair_1.glb")  # Read file from anywhere
+# Write .glb file to disk
+with open(asset_path, "wb") as f:
+    f.write(asset_bytes)
+```
+
+**Supported Backends:** Local filesystem, S3, Azure Blob Storage, GCS, HTTP/HTTPS, FTP, SFTP, in-memory
+
+### Vector Adapter
+
+Swap vector databases without code changes:
+
+```python
+from sisglib.adapters.vectors import VectorsAdapter
+
+# Development - numpy (in-memory)
+vectors = await VectorsAdapter.from_config({"backend": "numpy", ...})
+
+# Research - local ChromaDB
+vectors = await VectorsAdapter.from_config({"backend": "chromadb", ...})
+
+# Production - managed Pinecone
+vectors = await VectorsAdapter.from_config({"backend": "pinecone", ...})
+
+# Same search API across all backends
+results = await vectors.search(query_vector=embedding, k=10)
+```
+
+### Metadata Adapter
+
+Store and retrieve scene metadata consistently:
+
+```python
+from sisglib.adapters.metadata import MetadataAdapter
+
+# Development - JSON files
+metadata = await MetadataAdapter.from_config({"backend": "json", ...})
+
+# Production - MongoDB
+metadata = await MetadataAdapter.from_config({"backend": "mongodb", ...})
+
+# Same interface
+await metadata.insert({"asset_id": "123", "attributes": [...]})
+```

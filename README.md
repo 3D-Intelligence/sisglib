@@ -2,13 +2,15 @@
 
 **Spatial Intelligence Scene Generation Library**
 
-A unified framework for developing, evaluating, and benchmarking 3D scene generation algorithms - built for research and production.
+A unified framework for developing, evaluating, and benchmarking **compositional 3D scene generation algorithms** - built for research and production.
 
 **For researchers:**
 The *OpenAI Gym* of 3D scene generation - a standardized framework for implementing novel approaches, comparing methods, and sharing reproducible results.
 
 **For engineers:**
 The *Hugging Face Transformers* of 3D scene generation - a modular foundation for deploying research prototypes into real-world pipelines.
+
+> **Why compositional?** sisglib focuses on asset-based scene generation for workflow compatibility with architecture and gaming, asset reusability, implicit interpretability, and platform-agnostic interoperability. [Learn more →](docs/compositional-scene-generation.md)
 
 ## Why sisglib?
 
@@ -102,105 +104,8 @@ All strategies operate on the [sissf](https://github.com/3D-Intelligence/sissf/w
 
 **Learn more:**
 - [Custom Strategies Development Guide](docs/guides/pipelines/custom-strategies.md) - Complete guide with examples
+- [Semantic Asset Intelligence](docs/guides/vectors/semantic-asset-intelligence.md) - Find 3D assets using natural language or visual queries
 - [`HolodeckStrategy`](sisglib/pipeline/generation/strategies/holodeck/holodeck.py) - Reference implementation
-
-## Semantic Asset Intelligence
-
-Find 3D assets using natural language or visual queries:
-
-```python
-from sisglib.adapters.vectors import WeaviateAdapter
-
-# Initialize vector store (or use numpy, Pinecone, ChromaDB, Faiss...)
-vectors = WeaviateAdapter(
-    http_url="http://localhost:8080",
-    class_name="AssetEmbeddings",
-    dimension=768
-)
-
-# Search using text
-results = await vectors.search(
-    query_vector=clip_text_embed("modern sofa"),
-    k=10,
-    metadata_filter={"category": "furniture"}
-)
-```
-
-**Supported Embeddings:**
-CLIP, BLIP, BLIP-2, ULIP, OpenShape, PointCLIP  
-**Supported Backends:**
-Numpy (local), Faiss, Pinecone, Weaviate, ChromaDB, Qdrant, Milvus, PostgreSQL+pgvector
-
-Swap backends by changing configuration - your research code stays the same.
-
-
-## Backend-Agnostic Infrastructure
-
-sisglib's adapter system abstracts storage, metadata, and vector operations - letting you focus on your algorithm, not infrastructure.
-
-### Storage Adapter
-
-Read and write assets across different backends with the same API:
-
-```python
-from sisglib.adapters.storage import StorageAdapter
-
-# Development - local files
-adapter = await StorageAdapter.from_url("file:///local/assets")
-
-# Research - Hugging Face datasets (no download needed)
-adapter = await StorageAdapter.from_url(
-    "https://huggingface.co/datasets/your-org/assets"
-)
-
-# Production - cloud storage
-adapter = await StorageAdapter.from_url("s3://prod-bucket/assets")
-
-# Same code works for all backends
-asset_bytes: bytes = await adapter.read("objects/Chair_1.glb")  # Read file from anywhere
-# Write .glb file to disk
-with open(asset_path, "wb") as f:
-    f.write(asset_bytes)
-```
-
-**Supported Backends:** Local filesystem, S3, Azure Blob Storage, GCS, HTTP/HTTPS, FTP, SFTP, in-memory
-
-### Vector Adapter
-
-Swap vector databases without code changes:
-
-```python
-from sisglib.adapters.vectors import VectorsAdapter
-
-# Development - numpy (in-memory)
-vectors = await VectorsAdapter.from_config({"backend": "numpy", ...})
-
-# Research - local ChromaDB
-vectors = await VectorsAdapter.from_config({"backend": "chromadb", ...})
-
-# Production - managed Pinecone
-vectors = await VectorsAdapter.from_config({"backend": "pinecone", ...})
-
-# Same search API across all backends
-results = await vectors.search(query_vector=embedding, k=10)
-```
-
-### Metadata Adapter
-
-Store and retrieve scene metadata consistently:
-
-```python
-from sisglib.adapters.metadata import MetadataAdapter
-
-# Development - JSON files
-metadata = await MetadataAdapter.from_config({"backend": "json", ...})
-
-# Production - MongoDB
-metadata = await MetadataAdapter.from_config({"backend": "mongodb", ...})
-
-# Same interface
-await metadata.insert({"asset_id": "123", "attributes": [...]})
-```
 
 ## Key Features
 
@@ -217,33 +122,6 @@ await metadata.insert({"asset_id": "123", "attributes": [...]})
 - **Lazy Loading**: Process massive datasets over HTTP without local storage
 - **Batch Processing**: Generate and store embeddings for large asset libraries
 - **Flexible Metadata**: Associate arbitrary metadata with assets for filtering
-
-## Research to Production
-
-sisglib is designed for the full lifecycle - from initial experiments to deployed systems:
-
-**1. Prototype Locally**
-```python
-# Use in-memory storage and numpy vectors
-storage = await StorageAdapter.from_url("file:///local/assets")
-vectors = NumpyAdapter(dimension=768)
-```
-
-**2. Validate at Scale**
-```python
-# Use Hugging Face datasets and local ChromaDB
-storage = await StorageAdapter.from_url("https://huggingface.co/datasets/...")
-vectors = ChromaDBAdapter(path="./chromadb")
-```
-
-**3. Deploy to Production**
-```python
-# Use cloud storage and managed vector DB
-storage = await StorageAdapter.from_url("s3://prod-bucket/assets")
-vectors = PineconeAdapter(api_key=os.getenv("PINECONE_KEY"))
-```
-
-Same research code. Different configuration. No refactoring.
 
 ## Example: Comparing Scene Generation Methods
 
@@ -276,16 +154,45 @@ for strategy in [holodeck, your_method, hybrid]:
         metrics = evaluate_scene(scene, ground_truth)
 ```
 
+## Research to Production
+
+sisglib is designed for the full lifecycle - from initial experiments to deployed systems:
+
+**1. Prototype Locally**
+```python
+# Use in-memory storage and numpy vectors
+storage = await StorageAdapter.from_url("file:///local/assets")
+vectors = NumpyAdapter(dimension=768)
+```
+
+**2. Validate at Scale**
+```python
+# Use Hugging Face datasets and local ChromaDB
+storage = await StorageAdapter.from_url("https://huggingface.co/datasets/...")
+vectors = ChromaDBAdapter(path="./chromadb")
+```
+
+**3. Deploy to Production**
+```python
+# Use cloud storage and managed vector DB
+storage = await StorageAdapter.from_url("s3://prod-bucket/assets")
+vectors = PineconeAdapter(api_key=os.getenv("PINECONE_KEY"))
+```
+
+Same research code. Different configuration. No refactoring.
+
 ## Documentation
 
-Please refer to the following general documentations for more information:
+### Overview
 - [Project Vision](docs/vision.md)
 - [Value Propositions](docs/value_propositions.md)
 - [Development Roadmap](docs/roadmap.md)
+- **[Why Compositional Scene Generation?](docs/compositional-scene-generation.md)** - Understanding asset-based approaches vs neural/unified methods
 
 ### Guides
 - **[Custom Strategies Development Guide](docs/guides/pipelines/custom-strategies.md)** - Build your own scene generation strategies
 - **[Adapter Architecture Guide](docs/guides/adapters/adapter-architecture.md)** - Understanding storage, vectors, and metadata adapters
+- **[Semantic Asset Intelligence](docs/guides/adapters/vectors/semantic-asset-intelligence.md)** - Find 3D assets using natural language or visual queries
 <!-- - **[Backend Configuration Guide](docs/guides/backend-configuration.md)** - Configure adapters for different environments -->
 - **[HuggingFace Integration Guide](docs/guides/adapters/storage/huggingface-integration.md)** - Stream datasets without downloads
 
